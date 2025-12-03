@@ -2,6 +2,8 @@
 // Created by Stephen Donlin on 11/21/25.
 //
 
+#include <iostream>
+#include <stdexcept>
 #include <memory>
 
 #include "../headers/board.hpp"
@@ -12,24 +14,55 @@ Board::Board(const int size) {
     // resize the container of tile
 }
 
-std::vector<std::vector<std::shared_ptr<Hex>>> Board::GetTiles() const {
+const std::vector<std::vector<std::shared_ptr<Hex>>>& Board::GetTiles() const {
     return tiles_;
 }
 
-void Board::Resize(int size) {
+void Board::Resize(const int size) {
+    size_ = size;
     tiles_.resize(size);
     for (int in = 0; in < size; in++) {
         tiles_[in].resize(size);
     }
 }
 
-const Hex& GetTile(const int col, const int row) const {
-    // returns reference to Hex tile
-    if (col < 0 || col >= size_ || row < 0 || row >= size_) {
-
-    }
-    return
+int Board::GetSize() const {
+    return size_;
 }
+
+std::shared_ptr<Hex> Board::GetTile(const int row, const int col) const {
+    if (row < 0 || row >= size_ || col < 0 || col >= size_) {
+        throw std::out_of_range("Board::GetTile: row/col out of range");
+    }
+    return tiles_[row][col];
+}
+
+std::vector<std::shared_ptr<Hex>> Board::GetNeighbors(const int row, const int col) const {
+    std::vector<std::shared_ptr<Hex>> neighbors;
+
+    // six directions on the hex grid in (row, col) coordinates
+    static const int d_row[6] = {-1,  1,  0,  0, -1,  1};
+    static const int d_col[6] = { 0,  0, -1,  1,  1, -1};
+
+    for (int i = 0; i < 6; ++i) {
+        const int nr = row + d_row[i];
+        const int nc = col + d_col[i];
+
+        if (nr >= 0 && nr < size_ && nc >= 0 && nc < size_) {
+            neighbors.push_back(tiles_[nr][nc]);
+        }
+    }
+
+    return neighbors;
+}
+
+// const Hex& GetTile(const int col, const int row) const {
+//     // returns reference to Hex tile
+//     if (col < 0 || col >= size_ || row < 0 || row >= size_) {
+//
+//     }
+//     return board[col][row]
+// }
 
 void Board::Build(const int size) {
     Resize(size); // set correct size
@@ -43,6 +76,7 @@ void Board::Build(const int size) {
     std::cout << std::endl;
 }
 
+// TODO: refactor to use GetTiles()
 std::ostream& operator<<(std::ostream& os, const Board& b) {
     for (int r = 0; r < b.size_; r++) {
         int indent = r * 3;

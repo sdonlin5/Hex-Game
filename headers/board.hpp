@@ -7,24 +7,23 @@
 
 #include <vector>
 #include <memory>
+
 #include "hex.hpp"
-#include "unionFind.hpp"
 
 
 class Board {
 
     public:
-        explicit Board(const int size);
+        explicit Board(int size);
         ~Board() = default;
 
         void Build(int size);
         void Resize(int size);
-        const Hex& GetTile(const int col, const int row) const;
-        std::vector<std::vector<std::shared_ptr<Hex>>> GetTiles() const;
-        std::string Stringify(Hex& hex);
 
-
-
+        [[nodiscard]] int GetSize() const;
+        std::shared_ptr<Hex> GetTile(int row, int col) const;
+        std::vector<std::shared_ptr<Hex>> GetNeighbors(int row, int col) const;
+        const std::vector<std::vector<std::shared_ptr<Hex>>>& GetTiles() const;
 
         // print to console
         friend std::ostream& operator<<(std::ostream& os, const Board& b);

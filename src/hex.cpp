@@ -53,9 +53,6 @@ std::weak_ptr<Hex> Hex::GetParent() const {
     return parent_;
 }
 
-void Hex::SetRank(const int rank) {
-    rank_ = rank;
-}
 bool Hex::IsRoot() const {
     // returns true if the node is it's own root
     if (std::weak_ptr<Hex> parent = GetParent(); parent.lock() == shared_from_this()) {
@@ -75,29 +72,3 @@ void Hex::SetParent(std::shared_ptr<Hex> parent) {
 int Hex::GetRank() const {
     return rank_;
 }
-
-Coords Hex::GetCoords() const {
-    return coords_;
-}
-
-void Hex::SetState(const state state) {
-    state_ = state;
-}
-
-state Hex::GetState() const {
-    return state_;
-}
-
-
-std::string Hex::StringifyCoords() const {
-    // returns the coordinates of hex as a string [Row, Col]
-    const std::string& col = column.at(coords_.col + 1);
-    const std::string row = std::to_string(coords_.row + 1);
-    return "[" + col + row + "]";
-}
-
-
-
-
-
-

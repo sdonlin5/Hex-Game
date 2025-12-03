@@ -4,8 +4,6 @@
 
 #include "../headers/unionFind.hpp"
 
-#include <qcoreapplication.h>
-
 void UnionFind::Union(std::shared_ptr<Hex> x, std::shared_ptr<Hex> y) {
     Link(FindRoot(x), FindRoot(y));
 }
@@ -16,11 +14,10 @@ void UnionFind::Link(std::shared_ptr<Hex> root_x, std::shared_ptr<Hex> root_y) {
     if (root_x -> GetRank() < root_y -> GetRank()) {
         root_x -> SetParent(root_y);
     }
-    // x > y
+    // rank root_x > root_y
     else if (root_x -> GetRank() > root_y -> GetRank()) {
         root_y -> SetParent(root_x);
     }
-    // equal rank
     else {
         root_y -> SetParent(root_x);
         root_x -> SetRank(root_x -> GetRank() + 1);

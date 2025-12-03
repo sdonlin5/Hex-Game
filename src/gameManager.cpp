@@ -11,21 +11,32 @@ GameManager::GameManager() {
     num_round_ = 0;
 }
 
-void GameManager::InitForest() const {
+void GameManager::InitForest() {
     //  Creates single element sets of Hex tiles, sets
     //  all board tile parent = self, rank = 0
     for (const auto& row : board_ -> GetTiles()) {
         for (const auto& col : row) {
-            uf_.MakeSet(col);
-
+            uf_black_.MakeSet(col);
+            uf_gold_.MakeSet(col);
         }
     }
+    // Edge nodes for black
+    black_top_ = std::make_shared<Hex>(-1, -1);
+    black_bottom_ = std::make_shared<Hex>(-2, -2);
+    uf_black_.MakeSet(black_top_);
+    uf_black_.MakeSet(black_bottom_);
+
+    // Edge nodes for gold
+    gold_left_ = std::make_shared<Hex>(-3, -3);
+    gold_right_ = std::make_shared<Hex>(-4, -4);
+    uf_gold_.MakeSet(gold_left_);
+    uf_gold_.MakeSet(gold_right_);
 }
 
-void GameManager::SetUp(const int n) const {
+
+void GameManager::SetUp(const int n) {
     // builds n x n game board, initializes disjoint-set forest
     // used by UnionFind algorithm
-    board_->Build(n);
+    board_ -> Build(n);
     InitForest();
-
 }

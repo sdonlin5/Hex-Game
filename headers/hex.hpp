@@ -45,14 +45,11 @@ class Hex : public std::enable_shared_from_this<Hex> {
 
         // Union-Find helpers (parent/rank)
         void SetSelfParent();
-
         std::weak_ptr<Hex> GetParent() const;
         bool IsRoot() const;
         void SetRank(int rank);
         void SetParent(std::shared_ptr<Hex> parent);
         int GetRank() const;
-
-
 
     private:
         std::weak_ptr<Hex> parent_;
