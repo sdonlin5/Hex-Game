@@ -64,6 +64,10 @@ bool Hex::IsRoot() const {
     return false;
 }
 
+void Hex::SetRank(const int rank) {
+    rank_ = rank;
+}
+
 void Hex::SetParent(std::shared_ptr<Hex> parent) {
     parent_ = std::weak_ptr<Hex>(parent);
 }
