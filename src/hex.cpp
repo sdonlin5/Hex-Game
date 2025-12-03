@@ -18,10 +18,9 @@ std::weak_ptr<Hex> Hex::GetParent() const {
     return parent_;
 }
 
-void Hex::SetRank(int rank) {
+void Hex::SetRank(const int rank) {
     rank_ = rank;
 }
-
 bool Hex::IsRoot() const {
     // returns true if the node is it's own root
     if (std::weak_ptr<Hex> parent = GetParent(); parent.lock() == shared_from_this()) {
@@ -29,6 +28,13 @@ bool Hex::IsRoot() const {
     }
     return false;
 }
+
+void Hex::SetParent(std::shared_ptr<Hex> parent) {
+    parent_ = std::weak_ptr<Hex>(parent);
+}
+
+
+
 
 void Hex::SetSelfParent() {
     // sets parent as weak_ptr to self

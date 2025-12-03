@@ -19,23 +19,35 @@
 
 
 
-class Hex : std::enable_shared_from_this<Hex> {
+class Hex : public std::enable_shared_from_this<Hex> {
+    // Fields First
+        // public static constants
+        // private static variables
+        // private instance variables
+    // Methods
+        // descending importance
+        // public methds first
+        // private or helper after methods that calls them
+
     public:
         Hex(const int row, const int col);
         ~Hex();
-        state GetState() const;
-        void SetState(state state);
+
         Coords GetCoords() const;
         void SetCoords(Coords coords);
+
+        state GetState() const;
+        void SetState(state state);
+
         std::string StringifyCoords() const;
+
         void SetSelfParent();
+
         std::weak_ptr<Hex> GetParent() const;
-
         bool IsRoot() const;
-
-
-
         void SetRank(int rank);
+        void SetParent(std::shared_ptr<Hex> parent);
+        int GetRank() const;
 
 
 
@@ -45,6 +57,5 @@ class Hex : std::enable_shared_from_this<Hex> {
         Coords coords_;
         state state_;
 };
-
 
 #endif //HEX_HEX_H

@@ -13,9 +13,11 @@ class UnionFind {
     public:
         UnionFind() = default;
         ~UnionFind() = default;
+        void MakeSet(std::shared_ptr<Hex> hex);
+        std::shared_ptr<Hex> FindRoot(std::shared_ptr<Hex> hex);
+        void Union(std::shared_ptr<Hex> x, std::shared_ptr<Hex> y);
+        void Link(std::shared_ptr<Hex> x, std::shared_ptr<Hex> y);
 
-       static void MakeSet(Hex& hex);
-       static Hex& FindRoot(std::shared_ptr<Hex> hex);
 
 
 };
