@@ -43,8 +43,7 @@ class Hex : public std::enable_shared_from_this<Hex> {
         state GetState() const;
         void SetState(state state);
 
-        std::string StringifyCoords() const;
-
+        // Union-Find helpers (parent/rank)
         void SetSelfParent();
 
         std::weak_ptr<Hex> GetParent() const;
