@@ -39,6 +39,7 @@ class Hex : public std::enable_shared_from_this<Hex> {
         void SetCoords(Coords coords);
         std::string StringifyCoords() const;
 
+        // State accessors
         state GetState() const;
         void SetState(state state);
 
