@@ -72,17 +72,8 @@ void Hex::SetParent(std::shared_ptr<Hex> parent) {
     parent_ = std::weak_ptr<Hex>(parent);
 }
 
-
-
-
-void Hex::SetSelfParent() {
-    // sets parent as weak_ptr to self
-    parent_ = weak_from_this();
-}
-
-void Hex::SetCoords(Coords coords) {
-    coords_.col = coords.col;
-    coords_.row = coords.row;
+int Hex::GetRank() const {
+    return rank_;
 }
 
 Coords Hex::GetCoords() const {
