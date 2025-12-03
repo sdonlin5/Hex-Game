@@ -34,6 +34,7 @@ class Hex : public std::enable_shared_from_this<Hex> {
         Hex(int row, int col);
         ~Hex();
 
+        // Coordinate accessors
         Coords GetCoords() const;
         void SetCoords(Coords coords);
 
