@@ -30,7 +30,8 @@ class Hex : public std::enable_shared_from_this<Hex> {
         // private or helper after methods that calls them
 
     public:
-        Hex(const int row, const int col);
+        // Constructors / destructor
+        Hex(int row, int col);
         ~Hex();
 
         Coords GetCoords() const;
