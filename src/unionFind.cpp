@@ -11,7 +11,8 @@ void UnionFind::Union(std::shared_ptr<Hex> x, std::shared_ptr<Hex> y) {
 }
 
 void UnionFind::Link(std::shared_ptr<Hex> root_x, std::shared_ptr<Hex> root_y) {
-    // x < y
+    //
+    // rank root_x < root_y
     if (root_x -> GetRank() < root_y -> GetRank()) {
         root_x -> SetParent(root_y);
     }
