@@ -1,6 +1,14 @@
-#include <iostream>
+//
+// Created by Stephen Donlin on 12/4/25.
+//
+#include <QApplication>
+#include "Window.hpp"
 
-int main() {
-    std::cout << "Hex game entry point (stub)." << std::endl;
-    return 0;
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+
+    Window w;
+    w.show();
+
+    return app.exec();
 }

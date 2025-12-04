@@ -2,7 +2,6 @@
 // Created by Stephen Donlin on 12/3/25.
 //
 
-
 #include <iostream>
 #include <cassert>
 #include <memory>
@@ -11,6 +10,7 @@
 #include "../headers/board.hpp"
 #include "../headers/hex.hpp"
 #include "../headers/unionFind.hpp"
+#include "../headers/gameManager.hpp"
 
 //  utils tests
 bool test_round_trip_offset_axial(int N) {
@@ -82,7 +82,7 @@ bool test_neighbors_edges() {
     Board board(N);
     board.Build(N);
 
-    // Some edge offset coords to sample
+    // edge offset coords
     std::pair<int, int> edge_offsets[] = {
         {0, 0},          // top-left
         {0, N - 1},      // top-right
@@ -102,7 +102,7 @@ bool test_neighbors_edges() {
             std::cout << "      " << n->StringifyCoords() << "\n";
         }
 
-        // all neighbors must be in bounds and non-null
+        // all neighbors must be in bounds +  non-null
         for (const auto& n : neighbors) {
             if (!n) {
                 std::cerr << "    ERROR: null neighbor\n";
@@ -134,7 +134,7 @@ bool test_unionfind_basic() {
     auto root_b = uf.FindRoot(b);
     auto root_c = uf.FindRoot(c);
 
-    // Initially each should be its own root
+    // initially each should own root
     assert(root_a == a);
     assert(root_b == b);
     assert(root_c == c);
@@ -174,6 +174,150 @@ bool test_unionfind_basic() {
     return true;
 }
 
+bool test_black_vertical_win_3x3() {
+    std::cout << "[TEST] black vertical win on 3x3 board\n";
+
+    GameManager& gm = GameManager::GetInstance();
+    gm.SetUp(3);  // build 3x3 board and initializes forests
+
+    const state black = state::kBlack;
+
+    // Middle column (offset col = 1) from top to bottom
+    // offset coords: (row, col) = (0,1), (1,1), (2,1)
+    std::vector<std::pair<int, int>> offset_coords = {
+        {0, 1},
+        {1, 1},
+        {2, 1}
+    };
+
+    for (std::size_t i = 0; i < offset_coords.size(); ++i) {
+        auto [row, col] = offset_coords[i];
+        auto [q, r] = utils::offset_to_axial(row, col);
+
+        bool played = gm.PlayMove(q, r, black);
+        if (!played) {
+            std::cerr << "  ERROR: PlayMove failed for black at (row,col)=("
+                      << row << "," << col << ")\n";
+            return false;
+        }
+
+        bool won = gm.CheckWin(black);
+
+        if (i < offset_coords.size() - 1) {
+            // no win
+            if (won) {
+                std::cerr << "  ERROR: black reported a win too early after "
+                          << (i + 1) << " moves\n";
+                return false;
+            }
+        } else {
+            // third stone connects
+            if (!won) {
+                std::cerr << "  ERROR: black did not win after forming a full "
+                          << "top-to-bottom path on move " << (i + 1) << "\n";
+                return false;
+            }
+        }
+    }
+
+    std::cout << "  OK: black vertical win detected correctly on 3x3 board\n";
+    return true;
+}
+
+
+
+bool test_gold_horizontal_win_3x3() {
+    std::cout << "[TEST] gold horizontal win on 3x3 board\n";
+
+    GameManager& gm = GameManager::GetInstance();
+    gm.SetUp(3);  // builds 3x3 board and initializes forests
+
+    const state gold = state::kGold;
+
+    // middle row (offset row = 1) from left to right:
+    // offset coords: (row, col) = (1,0), (1,1), (1,2)
+    std::vector<std::pair<int, int>> offset_coords = {
+        {1, 0},
+        {1, 1},
+        {1, 2}
+    };
+
+    for (std::size_t i = 0; i < offset_coords.size(); ++i) {
+        auto [row, col] = offset_coords[i];
+        auto [q, r] = utils::offset_to_axial(row, col);
+
+        bool played = gm.PlayMove(q, r, gold);
+        if (!played) {
+            std::cerr << "  ERROR: PlayMove failed for gold at (row,col)=("
+                      << row << "," << col << ")\n";
+            return false;
+        }
+
+        bool won = gm.CheckWin(gold);
+
+        if (i < offset_coords.size() - 1) {
+            // Before the last stone, gold not won
+            if (won) {
+                std::cerr << "  ERROR: gold reported a win too early after "
+                          << (i + 1) << " moves\n";
+                return false;
+            }
+        } else {
+            // Winnng placement
+            if (!won) {
+                std::cerr << "  ERROR: gold did not win after forming a full "
+                          << "left-to-right path on move " << (i + 1) << "\n";
+                return false;
+            }
+        }
+    }
+
+    std::cout << "  OK: gold horizontal win detected correctly on 3x3 board\n";
+    return true;
+}
+
+
+
+bool test_black_incomplete_path_no_win_3x3() {
+    std::cout << "[TEST] black does NOT win with incomplete path on 3x3 board\n";
+
+    GameManager& gm = GameManager::GetInstance();
+    gm.SetUp(3);
+
+    const state black = state::kBlack;
+
+    // two black stones at the top and middle of the middle column:
+    // offset coords: (row, col) = (0,1) and (1,1)
+    std::vector<std::pair<int, int>> offset_coords = {
+        {0, 1},
+        {1, 1}
+    };
+
+    for (std::size_t i = 0; i < offset_coords.size(); ++i) {
+        auto [row, col] = offset_coords[i];
+        auto [q, r] = utils::offset_to_axial(row, col);
+
+        bool played = gm.PlayMove(q, r, black);
+        if (!played) {
+            std::cerr << "  ERROR: PlayMove failed for black at (row,col)=("
+                      << row << "," << col << ")\n";
+            return false;
+        }
+
+        bool won = gm.CheckWin(black);
+        if (won) {
+            std::cerr << "  ERROR: black reported a win with only an "
+                      << "incomplete top-to-bottom path after move "
+                      << (i + 1) << "\n";
+            return false;
+        }
+    }
+
+    std::cout << "  OK: black does not win with an incomplete path on 3x3 board\n";
+    return true;
+}
+
+
 //  test runner main
 
 int main() {
@@ -181,12 +325,15 @@ int main() {
 
     all_ok &= test_round_trip_offset_axial(3);   // small
     all_ok &= test_round_trip_offset_axial(5);   // medium
-    all_ok &= test_round_trip_offset_axial(11);  // your default size
+    all_ok &= test_round_trip_offset_axial(11);  // default
 
     all_ok &= test_neighbors_center();
     all_ok &= test_neighbors_edges();
 
     all_ok &= test_unionfind_basic();
+    all_ok &= test_black_incomplete_path_no_win_3x3();
+    all_ok &= test_gold_horizontal_win_3x3();
+    all_ok &= test_black_vertical_win_3x3();
 
     if (all_ok) {
         std::cout << "\nALL TESTS PASSED\n";

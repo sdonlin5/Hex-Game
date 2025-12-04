@@ -128,6 +128,9 @@ void GameManager::InitForest() {
 void GameManager::SetUp(const int n) {
     // builds n x n game board, initializes disjoint-set forest
     // used by UnionFind algorithm
+    game_over_ = false;
+    winner_ = state::kNone;
+    num_round_ = 0;
     board_ -> Build(n);
     InitForest();
 }
