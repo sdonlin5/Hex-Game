@@ -6,8 +6,8 @@
 #define HEX_GameManager_H
 
 #include "board.hpp"
-#include "player.h"
 #include "unionFind.hpp"
+#include "state.hpp"
 
 
 class GameManager {
@@ -18,6 +18,8 @@ class GameManager {
         GameManager& operator=(const GameManager&) = delete;
         void SetUp(int n);
         void InitForest();
+        void PlayMove(int q, int r, state color);
+
 
         //        void PrintBoard()const;
 

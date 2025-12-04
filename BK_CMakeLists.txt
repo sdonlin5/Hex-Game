@@ -25,8 +25,6 @@ add_executable(Hex
         headers/board.hpp
         src/gameManager.cpp
         headers/gameManager.hpp
-        #src/player.cpp
-        #headers/player.h
 )
 target_link_libraries(Hex
         Qt::Core
