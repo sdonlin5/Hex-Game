@@ -41,34 +41,3 @@ state Hex::GetState() const {
 void Hex::SetState(const state state) {
     state_ = state;
 }
-
-
-// Union-Find helpers (parent/rank)
-void Hex::SetSelfParent() {
-    // sets parent as weak_ptr to self
-    parent_ = weak_from_this();
-}
-
-std::weak_ptr<Hex> Hex::GetParent() const {
-    return parent_;
-}
-
-bool Hex::IsRoot() const {
-    // returns true if the node is it's own root
-    if (std::weak_ptr<Hex> parent = GetParent(); parent.lock() == shared_from_this()) {
-        return true;
-    }
-    return false;
-}
-
-void Hex::SetRank(const int rank) {
-    rank_ = rank;
-}
-
-void Hex::SetParent(std::shared_ptr<Hex> parent) {
-    parent_ = std::weak_ptr<Hex>(parent);
-}
-
-int Hex::GetRank() const {
-    return rank_;
-}
