@@ -82,6 +82,7 @@ std::vector<std::shared_ptr<Hex>> Board::Neighbors(const int q, const int r) con
 }
 
 
+
 void Board::Build(const int N) {
     Resize(N);
 
@@ -101,8 +102,9 @@ void Board::Build(const int N) {
 // TODO: Refactor operator<< to use GetTiles()
 std::ostream& operator<<(std::ostream& os, const Board& b) {
     // Overloads << operator to output game board
+
     for (int r = 0; r < b.size_; r++) {
-        int indent = r * 3;
+        int indent = (r % 2 != 0) ? 1 : 0;
         os << std::string(indent, ' ');
         for (int q = 0; q < b.size_; q++) {
             os << b.tiles_[r][q] -> StringifyCoords() << "  ";

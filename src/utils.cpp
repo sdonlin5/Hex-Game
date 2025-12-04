@@ -3,17 +3,37 @@
 //
 
 #include "../headers/utils.hpp"
-std::pair<int, int> utils::offset_to_axial(int row, int col) {
-    // Convert Offset (row, col) to axial (q, r)
 
-    int q = col;
+std::pair<int, int> utils::offset_to_axial(int row, int col) {
+    // Convert Offset (row, col) to odd-r axial (q, r)
+    //
+    int q = col - (row - (row & 1)) / 2; // compute col value
+    int r = row;    // row stays same
+    return {q, r};
+}
+
+std::pair<int, int> utils::axial_to_offset(int q, int r) {
+    // Converts odd-r axial (q, r) to Offset (row, col)
+    //
+    int row = r;
+    int col = q + (row - (row & 1)) / 2; // compute q
+    return {row, col};
+}
+
+/*
+std::pair<int, int> utils::offset_to_axial(int row, int col) {
+    // Convert Offset (row, col) to odd-r axial (q, r)
+    //
+    int q = col - (row - (row&1)) / 2;
     int r = row - (col/2);
     return {q, r};
 }
 
 std::pair<int, int> utils::axial_to_offset(int q, int r) {
-    // Convert Axial (q, r) to Offset (row, col)
-    int col = q;
-    int row = r + (q/2);
+    // Converts odd-r axial (q, r) to Offset (row, col)
+    //
+    int row = r;
+    int col = q + (row - (row&1)) / 2;
     return {row, col};
-}
+
+*/
