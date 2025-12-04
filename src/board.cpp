@@ -14,6 +14,7 @@ Board::Board(const int N) {
     // resize the container of tile
 }
 
+
 const std::vector<std::vector<std::shared_ptr<Hex>>>& Board::GetTiles() const {
     return tiles_;
 }
@@ -32,29 +33,46 @@ int Board::GetSize() const {
 }
 
 std::shared_ptr<Hex> Board::GetTile(const int q, const int r) const {
-    // Returns a hex tile at the given coordinates
-    if (r < 0 || r >= size_ || q < 0 || q >= size_) {
-        throw std::out_of_range("Board::GetTile: (q, r) out of range");
-    }
-    return tiles_[r][q];
+    // wrapper to for q, r coordinates
+    auto [row, col] = utils::axial_to_offset(q, r);
+    std::shared_ptr<Hex> tiles = GetTileByOffset(row, col);
+    return tiles;
 }
 
-std::vector<std::shared_ptr<Hex>> Board::GetNeighbors(const int q, const int r) const {
+std::shared_ptr<Hex> Board::GetTileByOffset(const int row, const int col) const {
+    if (row < 0 || row >= size_ || col < 0 || col >= size_) {
+        throw std::out_of_range("Tile coordinates out of range");
+    }
+    return tiles_[row][col];
+}
+
+std::vector<std::shared_ptr<Hex>> Board::GetNeighbors(const Coords& coords) const {
+    // Wrapper to pass coordinates as argument
+    return Neighbors(coords.q, coords.r);
+}
+
+std::vector<std::shared_ptr<Hex>> Board::Neighbors(const int q, const int r) const {
+    // Returns vector of neighbors for coordinates (q, r)
+    static const std::array<std::pair<int, int>, 6> directions = {{
+        {+1,  0},  // right
+        {+1, -1},  // top-right
+        { 0, -1},  // top-left
+        {-1,  0},  // left
+        {-1, +1},  // bottom-left
+        { 0, +1}   // bottom-right
+    }};
+
     std::vector<std::shared_ptr<Hex>> neighbors;
 
-    // six directions on the hex grid in (q, r) coordinates
-    // top-left, top-right, left, right, bottom-left, bottom-right
-    static const int direction_q[6] = { 0,  1, -1,  1, -1,  0};
-    static const int direction_r[6] = {-1, -1,  0,  0,  1,  1};
+    for (const auto& [dir_q, dir_r] : directions) {
+        int neighbor_q = q + dir_q;
+        int neighbor_r = r + dir_r;
 
-    for (int i = 0; i < 6; ++i) {
-        const int neighbor_q = q + direction_q[i];
-        const int neighbor_r = r + direction_r[i];
+        // Convert to storage coords to check bounds
+        auto [row, col] = utils::axial_to_offset(neighbor_q, neighbor_r);
 
-
-        if (neighbor_r >= 0 && neighbor_r < size_ &&
-            neighbor_q >= 0 && neighbor_q < size_) {
-            neighbors.push_back(tiles_[neighbor_r][neighbor_q]);
+        if (row >= 0 && row < size_ && col >= 0 && col < size_) {
+            neighbors.push_back(tiles_[row][col]);
         }
     }
 
@@ -62,7 +80,23 @@ std::vector<std::shared_ptr<Hex>> Board::GetNeighbors(const int q, const int r) 
 }
 
 
+
+
+
+
 void Board::Build(const int N) {
+
+    int q = col;
+    int r = row - (col/2);
+
+
+    for (int row = 0; row < N; row++) {
+        for (int col = 0; col < N; col++)
+            tiles_[row][col] = std::make_shared<Hex>(q,r);  // create new tiles
+        }
+    }
+
+
     // Generates game board of NxN tiles
     Resize(N);
     for (int r = 0; r < N; r++) {

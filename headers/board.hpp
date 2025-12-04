@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <memory>
+#include "utils.hpp"
 
 #include "hex.hpp"
 
@@ -19,10 +20,17 @@ class Board {
 
         void Build(int N);
         void Resize(int N);
-
         int GetSize() const;
+
+        // Accessors for Axial and Offset coordinates
         std::shared_ptr<Hex> GetTile(int q, int r) const;
-        std::vector<std::shared_ptr<Hex>> GetNeighbors(int q, int r) const;
+        std::shared_ptr<Hex> GetTileByOffset(int row, int col) const;
+
+        // Accessors for neighboring tiles
+        std::vector<std::shared_ptr<Hex>> GetNeighbors(const Coords& coords) const;
+        std::vector<std::shared_ptr<Hex>> Neighbors(int q, int r) const;
+
+
         const std::vector<std::vector<std::shared_ptr<Hex>>>& GetTiles() const;
 
         // print to console
@@ -30,8 +38,7 @@ class Board {
 
     private:
         int size_; // size
-        std::vector<std::vector<std::shared_ptr<Hex>>> tiles_;
-        //std::vector<std::vector<HexState>> tile_states_;
+        std::vector<std::vector<std::shared_ptr<Hex>>> tiles_
 
 
 };
