@@ -6,9 +6,10 @@
 
 
 // Constructors and Destructors
-Hex::Hex(const int row, const int col) {
-    // default constructor
-    SetCoords(Coords{row, col});
+Hex::Hex(const int q, const int r) {
+    // Default constructor
+    // Axial coordinates q: offset col, r: row
+    SetCoords(Coords{q, r});
 }
 
 Hex::~Hex() = default;
@@ -20,15 +21,16 @@ Coords Hex::GetCoords() const {
 }
 
 void Hex::SetCoords(Coords coords) {
-    coords_.col = coords.col;
-    coords_.row = coords.row;
+    coords_.q = coords.q;
+    coords_.r = coords.r;
 }
 
 std::string Hex::StringifyCoords() const {
-    // returns the coordinates of hex as a string [Row, Col]
-    const std::string& col = column.at(coords_.col + 1);
-    const std::string row = std::to_string(coords_.row + 1);
-    return "[" + col + row + "]";
+    //  Returns the coordinates of hex as a string: [ColRow]
+    //  Cols: Letter, Rows: Num
+    const std::string& q = column.at(coords_.q + 1);
+    const std::string r = std::to_string(coords_.r + 1);
+    return "[" + q + r + "]";
 }
 
 

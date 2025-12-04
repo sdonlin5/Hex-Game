@@ -14,10 +14,10 @@ GameManager::GameManager() {
 void GameManager::InitForest() {
     //  Creates single element sets of Hex tiles, sets
     //  all board tile parent = self, rank = 0
-    for (const auto& row : board_ -> GetTiles()) {
-        for (const auto& col : row) {
-            uf_black_.MakeSet(col);
-            uf_gold_.MakeSet(col);
+    for (const auto& row : board_->GetTiles()) {
+        for (const auto& tile : row) {
+            uf_black_.MakeSet(tile);
+            uf_gold_.MakeSet(tile);
         }
     }
     // Edge nodes for black

@@ -1,10 +1,14 @@
 //
 // Created by Stephen Donlin on 11/21/25.
 //
-// Implements the Hex class representing tiles on the game board.
-
+//  Implements the Hex class representing tiles on the game board.
+//  Stores the tile state/ownership and coordinates as private members and
+//  provides accessors for both.
+//  Uses axial coordinates (q, r) where q: offset col, r: row
 //
-
+//  References:
+//      https://www.redblobgames.com/grids/hexagons/
+//
 
 #ifndef HEX_HEX_H
 #define HEX_HEX_H
@@ -31,7 +35,7 @@ class Hex {
 
     public:
         // Constructors / destructor
-        Hex(int row, int col);
+        Hex(int q, int r);
         ~Hex();
 
         // Coordinate accessors

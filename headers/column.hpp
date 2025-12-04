@@ -27,6 +27,13 @@ inline std::map<int, std::string> column = {
     {16, "P"},
     {17, "Q"},
     {18, "R"},
-    {19, "S"}
+    {19, "S"},
+    {20, "T"},
+    {21, "U"},
+    {22, "V"},
+    {23, "W"},
+    {24, "X"},
+    {25, "Y"},
+    {26, "Z"}
 };
 #endif // HEX_COLUMN_LABEL_H

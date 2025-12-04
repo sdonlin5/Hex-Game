@@ -1,0 +1,25 @@
+Generated 4x4 board
+[A1]  [A2]  [A3]  [A4]
+   [B1]  [B2]  [B3]  [B4]
+      [C1]  [C2]  [C3]  [C4]
+         [D1]  [D2]  [D3]  [D4]
+
+
+Neighbor listing for each tile on a 4x4 board:
+
+Tile [A1] (row=0, col=0) has neighbors: [B1], [A2]
+Tile [A2] (row=1, col=0) has neighbors: [A1], [C1], [B2], [A2]
+Tile [A3] (row=2, col=0) has neighbors: [B1], [D1], [C2], [B2]
+Tile [A4] (row=3, col=0) has neighbors: [C1], [D2], [C2]
+Tile [B1] (row=0, col=1) has neighbors: [B2], [A1], [A3], [B1]
+Tile [B2] (row=1, col=1) has neighbors: [A2], [C2], [B1], [B3], [A3], [C1]
+Tile [B3] (row=2, col=1) has neighbors: [B2], [D2], [C1], [C3], [B3], [D1]
+Tile [B4] (row=3, col=1) has neighbors: [C2], [D1], [D3], [C3]
+Tile [C1] (row=0, col=2) has neighbors: [B3], [A2], [A4], [B2]
+Tile [C2] (row=1, col=2) has neighbors: [A3], [C3], [B2], [B4], [A4], [C2]
+Tile [C3] (row=2, col=2) has neighbors: [B3], [D3], [C2], [C4], [B4], [D2]
+Tile [C4] (row=3, col=2) has neighbors: [C3], [D2], [D4], [C4]
+Tile [D1] (row=0, col=3) has neighbors: [B4], [A3], [B3]
+Tile [D2] (row=1, col=3) has neighbors: [A4], [C4], [B3], [C3]
+Tile [D3] (row=2, col=3) has neighbors: [B4], [D4], [C3], [D3]
+Tile [D4] (row=3, col=3) has neighbors: [C4], [D3]

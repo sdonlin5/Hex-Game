@@ -8,9 +8,9 @@
 
 #include "../headers/board.hpp"
 
-Board::Board(const int size) {
+Board::Board(const int N) {
     // board constructor
-    size_ = size;
+    size_ = N;
     // resize the container of tile
 }
 
@@ -18,11 +18,12 @@ const std::vector<std::vector<std::shared_ptr<Hex>>>& Board::GetTiles() const {
     return tiles_;
 }
 
-void Board::Resize(const int size) {
-    size_ = size;
-    tiles_.resize(size);
-    for (int in = 0; in < size; in++) {
-        tiles_[in].resize(size);
+void Board::Resize(const int N) {
+    // Resizes board
+    size_ = N;
+    tiles_.resize(N);
+    for (int in = 0; in < N; in++) {
+        tiles_[in].resize(N);
     }
 }
 
@@ -30,63 +31,62 @@ int Board::GetSize() const {
     return size_;
 }
 
-std::shared_ptr<Hex> Board::GetTile(const int row, const int col) const {
-    if (row < 0 || row >= size_ || col < 0 || col >= size_) {
-        throw std::out_of_range("Board::GetTile: row/col out of range");
+std::shared_ptr<Hex> Board::GetTile(const int q, const int r) const {
+    // Returns a hex tile at the given coordinates
+    if (r < 0 || r >= size_ || q < 0 || q >= size_) {
+        throw std::out_of_range("Board::GetTile: (q, r) out of range");
     }
-    return tiles_[row][col];
+    return tiles_[r][q];
 }
 
-std::vector<std::shared_ptr<Hex>> Board::GetNeighbors(const int row, const int col) const {
+std::vector<std::shared_ptr<Hex>> Board::GetNeighbors(const int q, const int r) const {
     std::vector<std::shared_ptr<Hex>> neighbors;
 
-    // six directions on the hex grid in (row, col) coordinates
-    static const int d_row[6] = {-1,  1,  0,  0, -1,  1};
-    static const int d_col[6] = { 0,  0, -1,  1,  1, -1};
+    // six directions on the hex grid in (q, r) coordinates
+    // top-left, top-right, left, right, bottom-left, bottom-right
+    static const int direction_q[6] = { 0,  1, -1,  1, -1,  0};
+    static const int direction_r[6] = {-1, -1,  0,  0,  1,  1};
 
     for (int i = 0; i < 6; ++i) {
-        const int nr = row + d_row[i];
-        const int nc = col + d_col[i];
+        const int neighbor_q = q + direction_q[i];
+        const int neighbor_r = r + direction_r[i];
 
-        if (nr >= 0 && nr < size_ && nc >= 0 && nc < size_) {
-            neighbors.push_back(tiles_[nr][nc]);
+
+        if (neighbor_r >= 0 && neighbor_r < size_ &&
+            neighbor_q >= 0 && neighbor_q < size_) {
+            neighbors.push_back(tiles_[neighbor_r][neighbor_q]);
         }
     }
 
     return neighbors;
 }
 
-// const Hex& GetTile(const int col, const int row) const {
-//     // returns reference to Hex tile
-//     if (col < 0 || col >= size_ || row < 0 || row >= size_) {
-//
-//     }
-//     return board[col][row]
-// }
 
-void Board::Build(const int size) {
-    Resize(size); // set correct size
-    for (int r = 0; r < size; r++) {
-        for (int c = 0; c < size; c++) {
-            tiles_[r][c] = std::make_shared<Hex>(r,c);  // create new tiles
+void Board::Build(const int N) {
+    // Generates game board of NxN tiles
+    Resize(N);
+    for (int r = 0; r < N; r++) {
+        for (int q = 0; q < N; q++) {
+            tiles_[r][q] = std::make_shared<Hex>(q,r);  // create new tiles
         }
     }
-    std::cout << "Generated " << size << "x" << size << " board" << std::endl;
+    // console output
+    std::cout << "Generated " << N << "x" << N << " board" << std::endl;
     std::cout << *this;
     std::cout << std::endl;
 }
 
-// TODO: refactor to use GetTiles()
+// TODO: Refactor operator<< to use GetTiles()
 std::ostream& operator<<(std::ostream& os, const Board& b) {
+    // Overloads << operator to output game board
     for (int r = 0; r < b.size_; r++) {
         int indent = r * 3;
         os << std::string(indent, ' ');
-        for (int c = 0; c < b.size_; c++) {
-            os << b.tiles_[r][c] -> StringifyCoords() << "  ";
+        for (int q = 0; q < b.size_; q++) {
+            os << b.tiles_[r][q] -> StringifyCoords() << "  ";
         }
         os << "\n";
     }
-
     return os;
 }
 

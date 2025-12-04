@@ -14,15 +14,15 @@
 class Board {
 
     public:
-        explicit Board(int size);
+        explicit Board(int N);
         ~Board() = default;
 
-        void Build(int size);
-        void Resize(int size);
+        void Build(int N);
+        void Resize(int N);
 
-        [[nodiscard]] int GetSize() const;
-        std::shared_ptr<Hex> GetTile(int row, int col) const;
-        std::vector<std::shared_ptr<Hex>> GetNeighbors(int row, int col) const;
+        int GetSize() const;
+        std::shared_ptr<Hex> GetTile(int q, int r) const;
+        std::vector<std::shared_ptr<Hex>> GetNeighbors(int q, int r) const;
         const std::vector<std::vector<std::shared_ptr<Hex>>>& GetTiles() const;
 
         // print to console

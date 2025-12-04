@@ -6,8 +6,8 @@
 #define HEX_COORDS_HPP
 
 struct Coords {
-  int col;
-  int row;
+  int q;    // column
+  int r;    // row
 };
 
 #endif //HEX_COORDS_HPP

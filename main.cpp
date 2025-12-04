@@ -5,7 +5,7 @@
 
 int main() {
     // Choose board size (3x3 or 4x4)
-    const int size = 4;
+    const int size = 26;
 
     //
     Board board(size);
@@ -15,18 +15,18 @@ int main() {
               << size << "x" << size << " board:\n\n";
 
     // Iterate over every tile on the board
-    for (int row = 0; row < size; ++row) {
-        for (int col = 0; col < size; ++col) {
-            // Get the tile at (row, col)
-            std::shared_ptr<Hex> tile = board.GetTile(row, col);
+    for (int r = 0; r < size; ++r) {
+        for (int q = 0; q < size; ++q) {
+            // Get the tile at (q, r)
+            std::shared_ptr<Hex> tile = board.GetTile(q, r);
             Coords coords = tile->GetCoords();
 
             std::cout << "Tile " << tile->StringifyCoords()
-                      << " (row=" << coords.row
-                      << ", col=" << coords.col << ") has neighbors: ";
+                      << " (q=" << coords.q
+                      << ", r=" << coords.r << ") has neighbors: ";
 
-            // Use the board's GetNeighbors with (row, col)
-            auto neighbors = board.GetNeighbors(coords.row, coords.col);
+            // Use the board's GetNeighbors with axial (q, r)
+            auto neighbors = board.GetNeighbors(coords.q, coords.r);
 
             if (neighbors.empty()) {
                 std::cout << "(none)";
