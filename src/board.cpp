@@ -86,24 +86,13 @@ std::vector<std::shared_ptr<Hex>> Board::Neighbors(const int q, const int r) con
 
 void Board::Build(const int N) {
 
-    int q = col;
-    int r = row - (col/2);
-
-
     for (int row = 0; row < N; row++) {
         for (int col = 0; col < N; col++)
-            tiles_[row][col] = std::make_shared<Hex>(q,r);  // create new tiles
+            auto [q, r] = utils::offset_to_axial(row, col);
+            tiles_[row][col] = std::make_shared<Hex>(q, r);
         }
     }
 
-
-    // Generates game board of NxN tiles
-    Resize(N);
-    for (int r = 0; r < N; r++) {
-        for (int q = 0; q < N; q++) {
-            tiles_[r][q] = std::make_shared<Hex>(q,r);  // create new tiles
-        }
-    }
     // console output
     std::cout << "Generated " << N << "x" << N << " board" << std::endl;
     std::cout << *this;
