@@ -21,6 +21,11 @@ class Board {
         void Build(int N);
         void Resize(int N);
         int GetSize() const;
+        bool InBounds(const int q, const int r) const;
+
+
+
+
 
         // Accessors for Axial and Offset coordinates
         std::shared_ptr<Hex> GetTile(int q, int r) const;

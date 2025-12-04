@@ -1,8 +1,7 @@
 //
 // Created by Stephen Donlin on 12/3/25.
 //
-// Minimal sanity tests for axial/offset conversions, Board neighbors,
-// and UnionFind connectivity.
+
 
 #include <iostream>
 #include <cassert>
@@ -13,8 +12,7 @@
 #include "../headers/hex.hpp"
 #include "../headers/unionFind.hpp"
 
-// ---------- utils tests ----------
-
+//  utils tests
 bool test_round_trip_offset_axial(int N) {
     std::cout << "[TEST] round-trip offset <-> axial for " << N << "x" << N << " board\n";
 
@@ -36,8 +34,7 @@ bool test_round_trip_offset_axial(int N) {
     return true;
 }
 
-// ---------- Board / neighbor tests ----------
-
+//  Board / neighbor tests
 bool test_neighbors_center() {
     std::cout << "[TEST] neighbors for a center tile\n";
 
@@ -45,7 +42,7 @@ bool test_neighbors_center() {
     Board board(N);
     board.Build(N);
 
-    // Choose a clear center tile in offset coords
+    // centet tile
     int center_row = 2;
     int center_col = 2;
 
@@ -60,13 +57,13 @@ bool test_neighbors_center() {
         std::cout << "    " << n->StringifyCoords() << "\n";
     }
 
-    // For a 5x5 board, the true geometric center should have 6 neighbors.
+    // 5x5 board, geometric center = 6 neighbors
     if (neighbors.size() != 6) {
         std::cerr << "  Expected 6 neighbors, got " << neighbors.size() << "\n";
         return false;
     }
 
-    // Sanity: neighbors must not be null
+    // neighbors must not be null
     for (const auto& n : neighbors) {
         if (!n) {
             std::cerr << "  Found null neighbor pointer\n";
@@ -105,7 +102,7 @@ bool test_neighbors_edges() {
             std::cout << "      " << n->StringifyCoords() << "\n";
         }
 
-        // Sanity: all neighbors must be in bounds and non-null
+        // all neighbors must be in bounds and non-null
         for (const auto& n : neighbors) {
             if (!n) {
                 std::cerr << "    ERROR: null neighbor\n";
@@ -118,7 +115,7 @@ bool test_neighbors_edges() {
     return true;
 }
 
-// ---------- UnionFind tests ----------
+// UnionFind tests
 
 bool test_unionfind_basic() {
     std::cout << "[TEST] UnionFind basic connectivity\n";
@@ -137,7 +134,7 @@ bool test_unionfind_basic() {
     auto root_b = uf.FindRoot(b);
     auto root_c = uf.FindRoot(c);
 
-    // Initially, each should be its own root
+    // Initially each should be its own root
     assert(root_a == a);
     assert(root_b == b);
     assert(root_c == c);
@@ -145,7 +142,7 @@ bool test_unionfind_basic() {
     assert(root_a != root_c);
     assert(root_b != root_c);
 
-    // Union a and b
+    // Union a, b
     uf.Union(a, b);
     root_a = uf.FindRoot(a);
     root_b = uf.FindRoot(b);
@@ -155,14 +152,14 @@ bool test_unionfind_basic() {
         return false;
     }
 
-    // c should still be separate
+    // c should  be separate
     root_c = uf.FindRoot(c);
     if (root_c == root_a) {
         std::cerr << "  ERROR: c incorrectly connected to a/b\n";
         return false;
     }
 
-    // Now union b and c (which should connect all three)
+    // union b and c
     uf.Union(b, c);
     root_a = uf.FindRoot(a);
     root_b = uf.FindRoot(b);
@@ -177,7 +174,7 @@ bool test_unionfind_basic() {
     return true;
 }
 
-// ---------- test runner main ----------
+//  test runner main
 
 int main() {
     bool all_ok = true;

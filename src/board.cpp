@@ -33,11 +33,21 @@ int Board::GetSize() const {
     return size_;
 }
 
+bool Board::InBounds(const int q, const int r) const {
+    // test if the (q, r) is within the bounds of the board
+    auto [first, second] = utils::axial_to_offset(q, r);
+    if (first < 0 || first >= size_ ||
+        second < 0 || second >= size_) {
+        return false;
+    }
+    return true;
+}
+
 std::shared_ptr<Hex> Board::GetTile(const int q, const int r) const {
     // wrapper to for q, r coordinates
     auto [row, col] = utils::axial_to_offset(q, r);
-    std::shared_ptr<Hex> tiles = GetTileByOffset(row, col);
-    return tiles;
+    std::shared_ptr<Hex> tile = GetTileByOffset(row, col);
+    return tile;
 }
 
 std::shared_ptr<Hex> Board::GetTileByOffset(const int row, const int col) const {
@@ -77,7 +87,6 @@ std::vector<std::shared_ptr<Hex>> Board::Neighbors(const int q, const int r) con
             neighbors.push_back(tiles_[row][col]);
         }
     }
-
     return neighbors;
 }
 
