@@ -45,7 +45,7 @@ class Hex {
 
     private:
         Coords coords_ {};
-        state state_;
+        state state_ {state::kNone};
 };
 
 #endif //HEX_HEX_H

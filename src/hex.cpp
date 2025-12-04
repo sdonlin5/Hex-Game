@@ -7,9 +7,8 @@
 
 // Constructors and Destructors
 Hex::Hex(const int row, const int col) {
-    // default constructor sets the state to none.
+    // default constructor
     SetCoords(Coords{row, col});
-    state_ = state::kNone;
 }
 
 Hex::~Hex() = default;

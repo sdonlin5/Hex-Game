@@ -18,7 +18,7 @@ void UnionFind::Link(std::shared_ptr<Hex> root_x, std::shared_ptr<Hex> root_y) {
     if (rank_x < rank_y) {
         parent_[root_x] = root_y;
     }
-    else if (rank_x ? rank_y) {
+    else if (rank_x > rank_y) {
         parent_[root_y] = root_x;
     }
     // if equal, set x as parent (arbitrary) and increment x rank
@@ -36,7 +36,7 @@ void UnionFind::MakeSet(std::shared_ptr<Hex> hex) {
 std::shared_ptr<Hex> UnionFind::FindRoot(std::shared_ptr<Hex> hex) {
     //  Given a hex tile, recurses on parent to find the root of a connected set and compresses the path
     auto it = parent_.find(hex);
-    // if not found, make parent = self
+    // if not found, return hex
     if (it == parent_.end()) {
         return hex;
     }

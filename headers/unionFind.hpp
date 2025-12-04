@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "hex.hpp"
-#include <unordered_set>
+#include <unordered_map>
 
 struct HexPtrHash {
     //  Given shared_ptr<Hex>, returns the hashed address of the managed raw pointer
