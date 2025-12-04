@@ -3,11 +3,13 @@
 
 #include "headers/board.hpp"
 
+
+
+
 int main() {
     // Choose board size (3x3 or 4x4)
-    const int size = 26;
+    const int size = 11;
 
-    //
     Board board(size);
     board.Build(size);
 
@@ -15,17 +17,16 @@ int main() {
               << size << "x" << size << " board:\n\n";
 
     // Iterate over every tile on the board
-    for (int r = 0; r < size; ++r) {
-        for (int q = 0; q < size; ++q) {
-            // Get the tile at (q, r)
-            std::shared_ptr<Hex> tile = board.GetTile(q, r);
-            Coords coords = tile->GetCoords();
+    for (int row = 0; row < size; ++row) {
+        for (int col = 0; col < size; ++col) {
+            // Get the tile using offset coordinates
+            std::shared_ptr<Hex> tile = board.GetTileByOffset(row, col);
+            Coords coords = tile->GetCoords();  // These are axial
 
             std::cout << "Tile " << tile->StringifyCoords()
                       << " (q=" << coords.q
                       << ", r=" << coords.r << ") has neighbors: ";
 
-            // Use the board's GetNeighbors with axial (q, r)
             auto neighbors = board.GetNeighbors(coords);
 
             if (neighbors.empty()) {

@@ -13,7 +13,6 @@
 Board::Board(const int N) {
     // board constructor
     size_ = N;
-    // resize the container of tile
 }
 
 
@@ -25,8 +24,8 @@ void Board::Resize(const int N) {
     // Resizes board
     size_ = N;
     tiles_.resize(N);
-    for (int in = 0; in < N; in++) {
-        tiles_[in].resize(N);
+    for (int i = 0; i < N; i++) {
+        tiles_[i].resize(N);
     }
 }
 
@@ -43,7 +42,8 @@ std::shared_ptr<Hex> Board::GetTile(const int q, const int r) const {
 
 std::shared_ptr<Hex> Board::GetTileByOffset(const int row, const int col) const {
     if (row < 0 || row >= size_ || col < 0 || col >= size_) {
-        throw std::out_of_range("Tile coordinates out of range");
+        std::cout << "col: " << col << " row: " << row << std::endl;
+        throw std::out_of_range("Board::GetTileByOffset: out of bounds");
     }
     return tiles_[row][col];
 }
@@ -83,6 +83,7 @@ std::vector<std::shared_ptr<Hex>> Board::Neighbors(const int q, const int r) con
 
 
 void Board::Build(const int N) {
+    Resize(N);
 
     for (int row = 0; row < N; row++) {
         for (int col = 0; col < N; col++) {

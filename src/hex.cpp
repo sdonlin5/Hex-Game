@@ -3,6 +3,7 @@
 //
 
 #include "../headers/hex.hpp"
+#include "../headers/utils.hpp"
 
 
 // Constructors and Destructors
@@ -26,11 +27,14 @@ void Hex::SetCoords(Coords coords) {
 }
 
 std::string Hex::StringifyCoords() const {
-    //  Returns the coordinates of hex as a string: [ColRow]
-    //  Cols: Letter, Rows: Num
-    const std::string& q = column.at(coords_.q + 1);
-    const std::string r = std::to_string(coords_.r + 1);
-    return "[" + q + r + "]";
+    // Convert axial (q, r) back to offset (row, col) for display
+    auto [row, col] = utils::axial_to_offset(coords_.q, coords_.r);
+
+    // Use offset col for letter, offset row for number
+    const std::string& col_letter = column.at(col + 1);
+    const std::string row_num = std::to_string(row + 1);
+
+    return "[" + col_letter + row_num + "]";
 }
 
 
