@@ -6,7 +6,7 @@
 #define HEX_UTILS_HPP
 
 #include <utility>
-#include "Coords.hpp"
+#include "coords.hpp"
 
 
 namespace utils {

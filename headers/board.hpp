@@ -38,7 +38,7 @@ class Board {
 
     private:
         int size_; // size
-        std::vector<std::vector<std::shared_ptr<Hex>>> tiles_
+        std::vector<std::vector<std::shared_ptr<Hex>>> tiles_;
 
 
 };

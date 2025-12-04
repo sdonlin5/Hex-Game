@@ -20,6 +20,7 @@ add_executable(Hex
         src/board.cpp
         src/gameManager.cpp
         src/unionFind.cpp
+        src/utils.cpp
 
         headers/hex.hpp
         headers/state.hpp
@@ -28,6 +29,7 @@ add_executable(Hex
         headers/board.hpp
         headers/gameManager.hpp
         headers/unionFind.hpp
+        headers/utils.hpp
         #src/player.cpp
         #headers/player.h
 )

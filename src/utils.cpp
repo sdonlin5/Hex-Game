@@ -11,7 +11,7 @@ std::pair<int, int> utils::offset_to_axial(int row, int col) {
     return {q, r};
 }
 
-std::pair<int, int> axial_to_offset(int q, int r) {
+std::pair<int, int> utils::axial_to_offset(int q, int r) {
     // Convert Axial (q, r) to Offset (row, col)
     int col = q;
     int row = r + (q/2);

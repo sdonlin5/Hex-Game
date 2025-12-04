@@ -26,7 +26,7 @@ int main() {
                       << ", r=" << coords.r << ") has neighbors: ";
 
             // Use the board's GetNeighbors with axial (q, r)
-            auto neighbors = board.GetNeighbors(coords.q, coords.r);
+            auto neighbors = board.GetNeighbors(coords);
 
             if (neighbors.empty()) {
                 std::cout << "(none)";

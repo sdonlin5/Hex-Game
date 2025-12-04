@@ -6,7 +6,9 @@
 #include <stdexcept>
 #include <memory>
 
+
 #include "../headers/board.hpp"
+#include "../headers/utils.hpp"
 
 Board::Board(const int N) {
     // board constructor
@@ -80,14 +82,10 @@ std::vector<std::shared_ptr<Hex>> Board::Neighbors(const int q, const int r) con
 }
 
 
-
-
-
-
 void Board::Build(const int N) {
 
     for (int row = 0; row < N; row++) {
-        for (int col = 0; col < N; col++)
+        for (int col = 0; col < N; col++) {
             auto [q, r] = utils::offset_to_axial(row, col);
             tiles_[row][col] = std::make_shared<Hex>(q, r);
         }
