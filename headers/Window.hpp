@@ -22,13 +22,13 @@ public:
         ~Window();
 
     private slots:
-        void updateTimer();
+        void updateTurnTimer();
         void onResignClicked();
 
     private:
         Ui::Window *ui;
-        QTimer *gameTimer;
-        int elapsedSeconds;
+        QTimer *turnTimer;
+        int secondsRemaining;
         QString player1Name_;
         QString player2Name_;
         state currentPlayer_;
@@ -36,6 +36,8 @@ public:
         void setupGame();
         void updatePlayerDisplay();
         void formatTimerDisplay(int seconds);
+        void resetTurnTimer();
+        void passTurn();
 };
 
 #endif // WINDOW_H
