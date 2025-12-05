@@ -7,11 +7,13 @@
 #include "state.hpp"
 #include "coords.hpp"
 
-class HexBoard;  // Forward declaration
+// forward declaration
+
+class Window;
 
 class HexTile : public QGraphicsPolygonItem {
     public:
-        HexTile(int q, int r, qreal size, HexBoard* board);  // Changed to HexBoard*
+        HexTile(int q, int r, qreal size, Window* window);
 
         void setState(state newState);
         state getState() const { return state_; }
@@ -27,10 +29,10 @@ class HexTile : public QGraphicsPolygonItem {
         int q_;
         int r_;
         state state_;
-        HexBoard* board_;  // Changed to HexBoard*
+        Window* window_;
         QBrush defaultBrush_;
 
         void updateAppearance();
 };
 
-#endif // HEXTILE_HPP
+#endif //

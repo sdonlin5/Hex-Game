@@ -44,6 +44,7 @@ set(HEX_QT_SOURCES
         src/hexBoard.cpp
         src/Window.cpp
         src/start.cpp
+        src/gameHistory.cpp
 )
 
 set(HEX_QT_HEADERS
@@ -51,6 +52,7 @@ set(HEX_QT_HEADERS
         headers/hexBoard.hpp
         headers/Window.hpp
         headers/start.hpp
+        headers/gameHistory.hpp
 )
 
 # Console version - COMMENTED OUT

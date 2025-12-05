@@ -1,7 +1,3 @@
-//
-// Created by Stephen Donlin on 11/21/25.
-//
-
 #ifndef HEX_COLUMN_LABEL_H
 #define HEX_COLUMN_LABEL_H
 

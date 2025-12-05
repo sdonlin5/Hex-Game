@@ -1,12 +1,12 @@
 #include "../headers/hexTile.hpp"
-#include "../headers/hexBoard.hpp"
+#include "../headers/Window.hpp"
 #include <QGraphicsSceneMouseEvent>
 #include <cmath>
 
-HexTile::HexTile(int q, int r, qreal size, HexBoard* board)
-    : q_(q), r_(r), state_(state::kNone), board_(board)
+HexTile::HexTile(int q, int r, qreal size, Window* window)
+    : q_(q), r_(r), state_(state::kNone), window_(window)
 {
-    // Create hexagon polygon
+    //  hexagon polygon
     QPolygonF hexagon;
     for (int i = 0; i < 6; ++i) {
         qreal angle = M_PI / 3.0 * i;
@@ -17,7 +17,7 @@ HexTile::HexTile(int q, int r, qreal size, HexBoard* board)
 
     setPolygon(hexagon);
 
-    // Set appearance
+    //
     defaultBrush_ = QBrush(QColor(220, 220, 220));
     setBrush(defaultBrush_);
     setPen(QPen(Qt::black, 2));
@@ -51,7 +51,7 @@ void HexTile::updateAppearance()
 void HexTile::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton && state_ == state::kNone) {
-        board_->handleTileClick(q_, r_);
+        window_->handleTileClick(q_, r_);
     }
     QGraphicsPolygonItem::mousePressEvent(event);
 }

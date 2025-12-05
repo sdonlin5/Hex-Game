@@ -1,6 +1,7 @@
 #include "../headers/Window.hpp"
-#include "../headers/HexTile.hpp"
+#include "../headers/hexTile.hpp"
 #include "../headers/utils.hpp"
+#include "../headers/gameHistory.hpp"
 #include "ui_Window.h"
 #include <QMessageBox>
 #include <QGraphicsTextItem>
@@ -60,6 +61,9 @@ void Window::setupGame()
 
     // Reset turn timer
     resetTurnTimer();
+
+    // Start game timer for duration tracking
+    gameTimer_.start();
 }
 
 void Window::setupBoard()
@@ -205,8 +209,27 @@ void Window::checkGameOver()
     if (GameManager::GetInstance().IsGameOver()) {
         turnTimer->stop();
         state winner = GameManager::GetInstance().GetWinner();
+        recordGameResult(winner);
         showWinDialog(winner);
     }
+}
+
+void Window::recordGameResult(state winner)
+{
+    // Get winner name
+    QString winnerName = (winner == state::kBlack) ? player1Name_ : player2Name_;
+
+    // Calculate game duration in seconds
+    int durationSeconds = static_cast<int>(gameTimer_.elapsed() / 1000);
+
+    // Record to CSV
+    GameHistory::GetInstance().RecordResult(
+        player1Name_,
+        player2Name_,
+        winnerName,
+        winner,
+        durationSeconds
+    );
 }
 
 void Window::showWinDialog(state winner)
@@ -247,7 +270,12 @@ void Window::onResignClicked()
     if (reply == QMessageBox::Yes) {
         turnTimer->stop();
 
+        // Winner is the other player
         state winner = (currentPlayer_ == state::kBlack) ? state::kGold : state::kBlack;
+
+        // Record the resignation as a game result
+        recordGameResult(winner);
+
         showWinDialog(winner);
     }
 }

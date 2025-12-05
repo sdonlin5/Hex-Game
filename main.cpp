@@ -1,6 +1,6 @@
 #include <QApplication>
-#include "../headers/Window.hpp"
-#include "../headers/StartScreen.hpp"
+#include "headers/Window.hpp"
+#include "headers/start.hpp"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);

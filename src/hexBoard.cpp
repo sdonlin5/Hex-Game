@@ -1,7 +1,3 @@
-//
-// Created by Stephen Donlin on 12/4/25.
-//
-
 #include "../headers/hexBoard.hpp"
 #include "../headers/utils.hpp"
 #include <QDebug>
@@ -23,21 +19,8 @@ HexBoard::HexBoard(QGraphicsScene* scene, int boardSize, qreal hexRadius, QObjec
     turnTimer_ = new QTimer(this);
     connect(turnTimer_, &QTimer::timeout, this, &HexBoard::OnTimerTick);
 
-    // Sound effects initialization
-    // soundsEnabled_ = false;  // Set to true if you add sound files
-    // if (soundsEnabled_) {
-    //     placeTileSound_ = std::make_unique<QSoundEffect>();
-    //     placeTileSound_->setSource(QUrl::fromLocalFile("resources/sounds/place_tile.wav"));
-    //     placeTileSound_->setVolume(0.5);
-    //
-    //     winSound_ = std::make_unique<QSoundEffect>();
-    //     winSound_->setSource(QUrl::fromLocalFile("resources/sounds/win.wav"));
-    //     winSound_->setVolume(0.7);
-    //
-    //     tickSound_ = std::make_unique<QSoundEffect>();
-    //     tickSound_->setSource(QUrl::fromLocalFile("resources/sounds/tick.wav"));
-    //     tickSound_->setVolume(0.3);
-    // }
+    // Sound Effects -
+    // soundsEnabled_ = false;
 
     InitializeBoard(boardSize);
 }
@@ -62,19 +45,15 @@ void HexBoard::InitializeBoard(int size) {
 }
 
 void HexBoard::CreateHexGrid(int size) {
-    // Create visual hex tiles
+    // Create creates tiles - window creates own tiles
+
     for (int row = 0; row < size; ++row) {
         for (int col = 0; col < size; ++col) {
             auto [q, r] = utils::offset_to_axial(row, col);
-
-            HexTile* hexTile = new HexTile(q, r, hexRadius_, this);
-            scene_->addItem(hexTile);
-
-            hexTiles_[Coords{q, r}] = hexTile;
         }
     }
 
-    qDebug() << "Created" << hexTiles_.size() << "hex tiles";
+    qDebug() << "HexBoard: Grid initialized for size" << size;
 }
 
 void HexBoard::ClearBoard() {
@@ -117,8 +96,6 @@ void HexBoard::OnTileClicked(int q, int r) {
         // Update visual representation
         UpdateTileVisual(q, r, currentPlayer_);
 
-        // PlaySound("place_tile");  // COMMENTED OUT
-
         emit MoveCompleted(static_cast<int>(currentPlayer_), true);
         emit TileClicked(q, r);
 
@@ -126,7 +103,6 @@ void HexBoard::OnTileClicked(int q, int r) {
         if (gameManager_.CheckWin(currentPlayer_)) {
             gameActive_ = false;
             turnTimer_->stop();
-            // PlaySound("win");  // COMMENTED OUT
             qDebug() << "Player" << (int)currentPlayer_ << "wins!";
             emit GameOver(static_cast<int>(currentPlayer_));
         } else {
@@ -168,10 +144,6 @@ void HexBoard::OnTimerTick() {
     timeRemaining_--;
     emit TimerTick(timeRemaining_);
 
-    // if (timeRemaining_ <= 3 && timeRemaining_ > 0) {
-    //     PlaySound("tick");  // COMMENTED OUT
-    // }
-
     if (timeRemaining_ <= 0) {
         qDebug() << "Time's up for player" << (int)currentPlayer_;
         SwitchTurn();
@@ -202,26 +174,7 @@ void HexBoard::ResumeGame() {
     }
 }
 
-void HexBoard::handleTileClick(int q, int r) {
-    // Forward the click to the window
-    if (window_) {
-        window_->handleTileClick(q, r);
-    }
-}
-
-
 void HexBoard::PlaySound(const QString& soundName) {
-
-    // if (!soundsEnabled_) return;
-    //
-    // if (soundName == "place_tile" && placeTileSound_) {
-    //     placeTileSound_->play();
-    // } else if (soundName == "win" && winSound_) {
-    //     winSound_->play();
-    // } else if (soundName == "tick" && tickSound_) {
-    //     tickSound_->play();
-    // }
-
-    // For now, just suppress unused parameter warning
+    // Sound effects disabled - can be re-enabled later
     Q_UNUSED(soundName);
 }

@@ -15,7 +15,6 @@ Hex::Hex(const int q, const int r) {
 
 Hex::~Hex() = default;
 
-
 // Coordinate accessors
 Coords Hex::GetCoords() const {
     return coords_;

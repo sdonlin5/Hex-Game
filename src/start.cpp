@@ -1,5 +1,4 @@
-
-#include "start.hpp"
+#include "../headers/start.hpp"
 #include "ui_StartScreen.h"
 #include <QMessageBox>
 
@@ -23,19 +22,20 @@ StartScreen::StartScreen(QWidget* parent)
     ui->player1LineEdit->selectAll();
 
     // Connect start button
-    connect(ui->startButton, &QPushButton::clicked, this, &StartScreen::OnStartClicked);
+    connect(ui->startButton, &QPushButton::clicked, this, &StartScreen::OnStart);
 }
 
 StartScreen::~StartScreen() {
     delete ui;
 }
 
-void StartScreen::OnStartClicked() {
-    // Get player names from text fields
+void StartScreen::OnStart() {
+    // get names
+
     player1Name_ = ui->player1LineEdit->text().trimmed();
     player2Name_ = ui->player2LineEdit->text().trimmed();
 
-    // Validate names are not empty
+    // names not empty
     if (player1Name_.isEmpty()) {
         player1Name_ = "Player 1";
     }
@@ -51,6 +51,6 @@ void StartScreen::OnStartClicked() {
         return;
     }
 
-    // Accept the dialog (closes with Accepted status)
+    // accept
     accept();
 }

@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QString>
+#include <QElapsedTimer>
 #include <vector>
 #include "gameManager.hpp"
 
@@ -41,6 +42,9 @@ public:
         std::vector<std::vector<HexTile*>> hexTiles_;
         int boardSize_;
 
+        // Game duration tracking
+        QElapsedTimer gameTimer_;
+
         void setupGame();
         void updatePlayerDisplay();
         void formatTimerDisplay(int seconds);
@@ -50,6 +54,7 @@ public:
         void renderBoard();
         void checkGameOver();
         void showWinDialog(state winner);
+        void recordGameResult(state winner);
 };
 
 #endif // WINDOW_H

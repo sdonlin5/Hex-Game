@@ -25,7 +25,7 @@ public:
         QString GetPlayer2Name() const { return player2Name_; }
 
     private slots:
-        void OnStartClicked();
+        void OnStart();
 
     private:
         Ui::StartScreen *ui;

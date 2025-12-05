@@ -19,10 +19,6 @@ bool GameManager::CheckValidMove(int q, int r, state color) {
     return true;
 }
 
-
-
-
-
 void GameManager::UnionNeighbors(const std::shared_ptr<Hex>& hex, const std::vector<std::shared_ptr<Hex>>& neighbors) {
     // Unions neighboring hex tiles of same state
     UnionFind& uf = (hex->GetState() == state::kBlack) ? uf_black_ : uf_gold_;
@@ -84,12 +80,9 @@ bool GameManager::PlayMove(int q, int r, state color) {
     if (row == board_->GetSize() - 1) {
         UnionEdge(played_tile, edge_bottom_);
     }
-
     CheckWin(color);
-    // helper if edge
     return true;
 }
-
 
 std::shared_ptr<Hex> GameManager::SetEdgeTile(int q, int r, const state color) {
     // creates virtual edges to connect
@@ -108,8 +101,6 @@ void GameManager::InitForest() {
             uf_gold_.MakeSet(tile);
         }
     }
-
-    // TODO: update to enable changing board orientation
 
     //  Set edge tile values for fixed orientation board
     edge_top_ = SetEdgeTile(-500, -500, state::kBlack);
