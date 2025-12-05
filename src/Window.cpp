@@ -1,65 +1,142 @@
-//
-// Created by Stephen Donlin on 12/4/25.
-//
-
-#include "Window.hpp"
+#include "../headers/Window.hpp"
 #include "ui_Window.h"
+#include <QMessageBox>
 
-#include <QGraphicsScene>
-#include <QResizeEvent>
-
-#include "hexTile.hpp"
-#include "../headers/gameManager.hpp"
-#include "../headers/utils.hpp"
-#include "../headers/theme.hpp"
-
-Window::Window(QWidget* parent)
-    : QMainWindow(parent),
-      ui(new Ui::Window)
+Window::Window(const QString& player1Name, const QString& player2Name, QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::Window)
+    , secondsRemaining(10)
+    , player1Name_(player1Name)
+    , player2Name_(player2Name)
+    , currentPlayer_(state::kBlack)
 {
     ui->setupUi(this);
-    QGraphicsView *view = ui->graphicsView;
 
-    // Set background color
-    view->setBackgroundBrush(theme::SCENE_BACKGROUND);
-    view->setRenderHint(QPainter::Antialiasing);
-    view->setDragMode(QGraphicsView::NoDrag);
+    // Set fixed window size to prevent resizing
+    setFixedSize(size());
 
-    scene = new QGraphicsScene(this);
+    // Initialize turn timer (counts down from 10 seconds)
+    turnTimer = new QTimer(this);
+    connect(turnTimer, &QTimer::timeout, this, &Window::updateTurnTimer);
 
-    // Create hex grid
-    int size = 11;
-    qreal radius = 35.0;  // Good visible size
+    // Connect resign button
+    connect(ui->resignButton, &QPushButton::clicked, this, &Window::onResignClicked);
 
-    // Build the board in offset coordinates (creates rhombus)
-    for (int row = 0; row < size; row++) {
-        for (int col = 0; col < size; col++) {
-            auto [q, r] = utils::offset_to_axial(row, col);
-            auto* tile = new HexTile(q, r, radius);
-            scene->addItem(tile);
-        }
-    }
+    // Setup game
+    setupGame();
 
-    // Set the scene
-    view->setScene(scene);
-
-    // Add margin and fit
-    QRectF bounds = scene->itemsBoundingRect();
-    bounds.adjust(-50, -50, 50, 50);
-    scene->setSceneRect(bounds);
-
-    view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    // Start turn timer
+    resetTurnTimer();
+    turnTimer->start(1000); // Update every second
 }
 
-Window::~Window() {
+Window::~Window()
+{
     delete ui;
 }
 
-void Window::resizeEvent(QResizeEvent* event) {
-    QMainWindow::resizeEvent(event);
+void Window::setupGame()
+{
+    // Initialize game manager
+    GameManager::GetInstance().SetUp(11);
 
-    // Refit the view when window is resized
-    if (scene && ui->graphicsView) {
-        ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    // Set initial player display
+    currentPlayer_ = state::kBlack;
+    updatePlayerDisplay();
+
+    // Reset turn timer
+    resetTurnTimer();
+}
+
+void Window::resetTurnTimer()
+{
+    secondsRemaining = 10;
+    formatTimerDisplay(secondsRemaining);
+}
+
+void Window::updateTurnTimer()
+{
+    secondsRemaining--;
+    formatTimerDisplay(secondsRemaining);
+
+    // If time runs out, pass the turn
+    if (secondsRemaining <= 0) {
+        passTurn();
+    }
+}
+
+void Window::passTurn()
+{
+    // Switch to the other player
+    if (currentPlayer_ == state::kBlack) {
+        currentPlayer_ = state::kGold;
+    } else {
+        currentPlayer_ = state::kBlack;
+    }
+
+    // Reset timer for next player
+    resetTurnTimer();
+    updatePlayerDisplay();
+}
+
+void Window::formatTimerDisplay(int seconds)
+{
+    QString timeText = QString("%1").arg(seconds, 2, 10, QChar('0'));
+
+    // Change color to red when time is running out
+    if (seconds <= 3) {
+        ui->timerLabel->setStyleSheet("QLabel { color: red; font-weight: bold; }");
+    } else {
+        ui->timerLabel->setStyleSheet("QLabel { color: black; font-weight: bold; }");
+    }
+
+    ui->timerLabel->setText(timeText + "s");
+}
+
+void Window::updatePlayerDisplay()
+{
+    QString playerName;
+    QString colorText;
+
+    if (currentPlayer_ == state::kBlack) {
+        playerName = player1Name_;
+        colorText = "Black";
+    } else {
+        playerName = player2Name_;
+        colorText = "Gold";
+    }
+
+    ui->currentPlayerLabel->setText(QString("Current Player:\n%1\n(%2)").arg(playerName).arg(colorText));
+}
+
+void Window::onResignClicked()
+{
+    QMessageBox::StandardButton reply;
+
+    QString playerName = (currentPlayer_ == state::kBlack) ? player1Name_ : player2Name_;
+
+    reply = QMessageBox::question(this, "Resign Game",
+                                   QString("%1, are you sure you want to resign?").arg(playerName),
+                                   QMessageBox::Yes | QMessageBox::No);
+
+    if (reply == QMessageBox::Yes) {
+        turnTimer->stop();
+
+        QString winnerName = (currentPlayer_ == state::kBlack) ? player2Name_ : player1Name_;
+        QMessageBox::information(this, "Game Over",
+                                QString("%1 wins by resignation!").arg(winnerName));
+
+        // Reset or close window
+        QMessageBox::StandardButton restart;
+        restart = QMessageBox::question(this, "New Game",
+                                        "Would you like to start a new game?",
+                                        QMessageBox::Yes | QMessageBox::No);
+
+        if (restart == QMessageBox::Yes) {
+            setupGame();
+            turnTimer->start(1000);
+        } else {
+            close();
+        }
     }
 }

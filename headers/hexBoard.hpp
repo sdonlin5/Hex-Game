@@ -7,6 +7,7 @@
 
 #include <QGraphicsScene>
 #include <QTimer>
+// Sound support commented out - can be re-enabled later
 //#include <QSoundEffect>
 #include <memory>
 #include <unordered_map>
@@ -50,10 +51,10 @@ public:
 
 signals:
     void TileClicked(int q, int r);
-    void MoveCompleted(state player, bool validMove);
-    void GameOver(state winner);
+    void MoveCompleted(int player, bool validMove);
+    void GameOver(int winner);
     void TimerTick(int secondsRemaining);
-    void TurnChanged(state newPlayer);
+    void TurnChanged(int newPlayer);
 
 private slots:
     void OnTimerTick();
@@ -82,11 +83,11 @@ private:
     int timeRemaining_;
     static constexpr int TURN_TIME_SECONDS = 10;
 
-    // Sound effects (optional)
-    std::unique_ptr<QSoundEffect> placeTileSound_;
-    std::unique_ptr<QSoundEffect> winSound_;
-    std::unique_ptr<QSoundEffect> tickSound_;
-    bool soundsEnabled_;
+    // Sound effects - COMMENTED OUT (can be re-enabled later)
+    // std::unique_ptr<QSoundEffect> placeTileSound_;
+    // std::unique_ptr<QSoundEffect> winSound_;
+    // std::unique_ptr<QSoundEffect> tickSound_;
+    // bool soundsEnabled_;
 };
 
 #endif //HEX_HEXBOARD_HPP

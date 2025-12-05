@@ -1,6 +1,3 @@
-//
-// Created by Stephen Donlin on 11/21/25.
-//
 
 #ifndef BOARD_H
 #define BOARD_H

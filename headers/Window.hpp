@@ -1,46 +1,41 @@
-//
-// Created by Stephen Donlin on 12/4/25.
-//
-
-#ifndef HEX_WINDOW_HPP
-#define HEX_WINDOW_HPP
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
+#include <QGraphicsView>
 #include <QGraphicsScene>
-#include "hexBoard.hpp"
+#include <QLabel>
+#include <QPushButton>
+#include <QString>
+#include "gameManager.hpp"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-    class Window;
-}
+namespace Ui { class Window; }
 QT_END_NAMESPACE
 
 class Window : public QMainWindow {
     Q_OBJECT
 
 public:
-        explicit Window(QWidget* parent = nullptr);
+        Window(const QString& player1Name, const QString& player2Name, QWidget *parent = nullptr);
         ~Window();
 
-    protected:
-        void resizeEvent(QResizeEvent* event) override;
-
     private slots:
-        void OnStartGame();
-        void OnResetGame();
-        void OnPauseGame();
-        void OnTurnChanged(state player);
-        void OnTimerTick(int seconds);
-        void OnGameOver(state winner);
+        void updateTimer();
+        void onResignClicked();
 
     private:
-        void SetupUI();
-        void ConnectSignals();
-
         Ui::Window *ui;
-        QGraphicsScene *scene_;
-        HexBoard *hexBoard_;
-        bool gamePaused_;
+        QTimer *gameTimer;
+        int elapsedSeconds;
+        QString player1Name_;
+        QString player2Name_;
+        state currentPlayer_;
+
+        void setupGame();
+        void updatePlayerDisplay();
+        void formatTimerDisplay(int seconds);
 };
 
-#endif //HEX_WINDOW_HPP
+#endif // WINDOW_H

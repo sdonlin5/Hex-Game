@@ -10,8 +10,11 @@ set(CMAKE_AUTOUIC ON)
 # Set Qt path from Homebrew
 set(CMAKE_PREFIX_PATH "/opt/homebrew/opt/qt")
 
-# Find Qt6
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets Multimedia)
+# Set the directory where .ui files are located
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/ui)
+
+# Find Qt6 (removed Multimedia since sounds are disabled)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 # Core sources used by both versions
 set(HEX_SOURCES
@@ -40,12 +43,14 @@ set(HEX_QT_SOURCES
         src/hexTile.cpp
         src/hexBoard.cpp
         src/Window.cpp
+        src/start.cpp
 )
 
 set(HEX_QT_HEADERS
         headers/hexTile.hpp
         headers/hexBoard.hpp
         headers/Window.hpp
+        headers/start.hpp
 )
 
 # Console version - COMMENTED OUT
@@ -63,14 +68,15 @@ add_executable(HexQt
         ${HEX_HEADERS}
         ${HEX_QT_SOURCES}
         ${HEX_QT_HEADERS}
-        src/Window.ui
+        ui/Window.ui
+        ui/StartScreen.ui
 )
 
 target_include_directories(HexQt PRIVATE headers)
 target_link_libraries(HexQt
         Qt6::Core
+        Qt6::Gui
         Qt6::Widgets
-        Qt6::Multimedia
 )
 
 # Test executable

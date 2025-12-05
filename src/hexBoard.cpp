@@ -17,26 +17,27 @@ HexBoard::HexBoard(QGraphicsScene* scene, int boardSize, qreal hexRadius, QObjec
     , gameActive_(false)
     , gamePaused_(false)
     , timeRemaining_(TURN_TIME_SECONDS)
-    , soundsEnabled_(false)  // Set to true if you add sound files
+    , turnTimer_(nullptr)
 {
     // Initialize timer
     turnTimer_ = new QTimer(this);
     connect(turnTimer_, &QTimer::timeout, this, &HexBoard::OnTimerTick);
 
-    // Initialize sound effects (optional - only if sound files exist)
-    if (soundsEnabled_) {
-        placeTileSound_ = std::make_unique<QSoundEffect>();
-        placeTileSound_->setSource(QUrl::fromLocalFile("resources/sounds/place_tile.wav"));
-        placeTileSound_->setVolume(0.5);
-
-        winSound_ = std::make_unique<QSoundEffect>();
-        winSound_->setSource(QUrl::fromLocalFile("resources/sounds/win.wav"));
-        winSound_->setVolume(0.7);
-
-        tickSound_ = std::make_unique<QSoundEffect>();
-        tickSound_->setSource(QUrl::fromLocalFile("resources/sounds/tick.wav"));
-        tickSound_->setVolume(0.3);
-    }
+    // Sound effects initialization - COMMENTED OUT
+    // soundsEnabled_ = false;  // Set to true if you add sound files
+    // if (soundsEnabled_) {
+    //     placeTileSound_ = std::make_unique<QSoundEffect>();
+    //     placeTileSound_->setSource(QUrl::fromLocalFile("resources/sounds/place_tile.wav"));
+    //     placeTileSound_->setVolume(0.5);
+    //
+    //     winSound_ = std::make_unique<QSoundEffect>();
+    //     winSound_->setSource(QUrl::fromLocalFile("resources/sounds/win.wav"));
+    //     winSound_->setVolume(0.7);
+    //
+    //     tickSound_ = std::make_unique<QSoundEffect>();
+    //     tickSound_->setSource(QUrl::fromLocalFile("resources/sounds/tick.wav"));
+    //     tickSound_->setVolume(0.3);
+    // }
 
     InitializeBoard(boardSize);
 }
@@ -88,7 +89,7 @@ void HexBoard::ClearBoard() {
 void HexBoard::ResetBoard() {
     InitializeBoard(boardSize_);
     turnTimer_->stop();
-    emit TurnChanged(currentPlayer_);
+    emit TurnChanged(static_cast<int>(currentPlayer_));
     emit TimerTick(timeRemaining_);
 }
 
@@ -116,25 +117,25 @@ void HexBoard::OnTileClicked(int q, int r) {
         // Update visual representation
         UpdateTileVisual(q, r, currentPlayer_);
 
-        PlaySound("place_tile");
+        // PlaySound("place_tile");  // COMMENTED OUT
 
-        emit MoveCompleted(currentPlayer_, true);
+        emit MoveCompleted(static_cast<int>(currentPlayer_), true);
         emit TileClicked(q, r);
 
         // Check for win
         if (gameManager_.CheckWin(currentPlayer_)) {
             gameActive_ = false;
             turnTimer_->stop();
-            PlaySound("win");
+            // PlaySound("win");  // COMMENTED OUT
             qDebug() << "Player" << (int)currentPlayer_ << "wins!";
-            emit GameOver(currentPlayer_);
+            emit GameOver(static_cast<int>(currentPlayer_));
         } else {
             // Switch to next player
             SwitchTurn();
         }
     } else {
         qDebug() << "Invalid move at" << q << r;
-        emit MoveCompleted(currentPlayer_, false);
+        emit MoveCompleted(static_cast<int>(currentPlayer_), false);
     }
 }
 
@@ -153,7 +154,7 @@ void HexBoard::SwitchTurn() {
     currentPlayer_ = (currentPlayer_ == state::kBlack) ? state::kGold : state::kBlack;
     ResetTimer();
     qDebug() << "Turn switched to player" << (int)currentPlayer_;
-    emit TurnChanged(currentPlayer_);
+    emit TurnChanged(static_cast<int>(currentPlayer_));
 }
 
 void HexBoard::ResetTimer() {
@@ -167,9 +168,9 @@ void HexBoard::OnTimerTick() {
     timeRemaining_--;
     emit TimerTick(timeRemaining_);
 
-    if (timeRemaining_ <= 3 && timeRemaining_ > 0) {
-        PlaySound("tick");
-    }
+    // if (timeRemaining_ <= 3 && timeRemaining_ > 0) {
+    //     PlaySound("tick");  // COMMENTED OUT
+    // }
 
     if (timeRemaining_ <= 0) {
         qDebug() << "Time's up for player" << (int)currentPlayer_;
@@ -184,7 +185,7 @@ void HexBoard::StartGame() {
     ResetTimer();
     turnTimer_->start(1000);  // 1 second intervals
     qDebug() << "Game started";
-    emit TurnChanged(currentPlayer_);
+    emit TurnChanged(static_cast<int>(currentPlayer_));
 }
 
 void HexBoard::PauseGame() {
@@ -202,13 +203,17 @@ void HexBoard::ResumeGame() {
 }
 
 void HexBoard::PlaySound(const QString& soundName) {
-    if (!soundsEnabled_) return;
+    // Sound functionality COMMENTED OUT (can be re-enabled later)
+    // if (!soundsEnabled_) return;
+    //
+    // if (soundName == "place_tile" && placeTileSound_) {
+    //     placeTileSound_->play();
+    // } else if (soundName == "win" && winSound_) {
+    //     winSound_->play();
+    // } else if (soundName == "tick" && tickSound_) {
+    //     tickSound_->play();
+    // }
 
-    if (soundName == "place_tile" && placeTileSound_) {
-        placeTileSound_->play();
-    } else if (soundName == "win" && winSound_) {
-        winSound_->play();
-    } else if (soundName == "tick" && tickSound_) {
-        tickSound_->play();
-    }
+    // For now, just suppress unused parameter warning
+    Q_UNUSED(soundName);
 }
