@@ -5,36 +5,33 @@
 #include "Window.hpp"
 #include "ui_Window.h"
 
-
 #include <QGraphicsScene>
+#include <QResizeEvent>
 
 #include "hexTile.hpp"
 #include "../headers/gameManager.hpp"
 #include "../headers/utils.hpp"
 #include "../headers/theme.hpp"
-// hex items
-
-
-
 
 Window::Window(QWidget* parent)
     : QMainWindow(parent),
       ui(new Ui::Window)
 {
-    ui->setupUi(this);  // connects designer widgets to ui
-    QGraphicsView *view = ui -> graphicsView; // access the view
+    ui->setupUi(this);
+    QGraphicsView *view = ui->graphicsView;
 
-    // set color
-    view -> setBackgroundBrush(theme::SCENE_BACKGROUND);
+    // Set background color
+    view->setBackgroundBrush(theme::SCENE_BACKGROUND);
+    view->setRenderHint(QPainter::Antialiasing);
+    view->setDragMode(QGraphicsView::NoDrag);
 
-    scene = new QGraphicsScene();
-    // create a single hex
-    //auto tile = new HexTile(0, 0, 20);
-    //tile -> SetState(state::kBlack);
+    scene = new QGraphicsScene(this);
 
+    // Create hex grid
     int size = 11;
-    qreal radius = 25.0;
+    qreal radius = 35.0;  // Good visible size
 
+    // Build the board in offset coordinates (creates rhombus)
     for (int row = 0; row < size; row++) {
         for (int col = 0; col < size; col++) {
             auto [q, r] = utils::offset_to_axial(row, col);
@@ -43,15 +40,26 @@ Window::Window(QWidget* parent)
         }
     }
 
-    view -> setScene(scene); // assign the scene
-    view->rotate(-30);
-    ui->graphicsView->setScene(scene);
-    //scene->addText("Hello Hex");
-    //scene->addItem(tile);
+    // Set the scene
+    view->setScene(scene);
 
-    // init GameManager, build hex grid, add HexItem objects to scene, etc.
+    // Add margin and fit
+    QRectF bounds = scene->itemsBoundingRect();
+    bounds.adjust(-50, -50, 50, 50);
+    scene->setSceneRect(bounds);
+
+    view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 Window::~Window() {
     delete ui;
+}
+
+void Window::resizeEvent(QResizeEvent* event) {
+    QMainWindow::resizeEvent(event);
+
+    // Refit the view when window is resized
+    if (scene && ui->graphicsView) {
+        ui->graphicsView->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    }
 }
