@@ -23,7 +23,7 @@ HexBoard::HexBoard(QGraphicsScene* scene, int boardSize, qreal hexRadius, QObjec
     turnTimer_ = new QTimer(this);
     connect(turnTimer_, &QTimer::timeout, this, &HexBoard::OnTimerTick);
 
-    // Sound effects initialization - COMMENTED OUT
+    // Sound effects initialization
     // soundsEnabled_ = false;  // Set to true if you add sound files
     // if (soundsEnabled_) {
     //     placeTileSound_ = std::make_unique<QSoundEffect>();
@@ -144,7 +144,7 @@ void HexBoard::UpdateTileVisual(int q, int r, state tileState) {
     auto it = hexTiles_.find(coords);
 
     if (it != hexTiles_.end()) {
-        it->second->SetState(tileState);
+        it->second->setState(tileState);
     } else {
         qWarning() << "Could not find tile at" << q << r;
     }
@@ -202,8 +202,16 @@ void HexBoard::ResumeGame() {
     }
 }
 
+void HexBoard::handleTileClick(int q, int r) {
+    // Forward the click to the window
+    if (window_) {
+        window_->handleTileClick(q, r);
+    }
+}
+
+
 void HexBoard::PlaySound(const QString& soundName) {
-    // Sound functionality COMMENTED OUT (can be re-enabled later)
+
     // if (!soundsEnabled_) return;
     //
     // if (soundName == "place_tile" && placeTileSound_) {

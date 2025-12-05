@@ -27,6 +27,10 @@ class GameManager {
         void UnionNeighbors(const std::shared_ptr<Hex>&hex, const std::vector<std::shared_ptr<Hex>>&neighbors);
         void UnionEdge(std::shared_ptr<Hex>& played_hex, std::shared_ptr<Hex>& direction_hex);
         bool CheckWin(state color);
+        // Add these public methods to the GameManager class:
+        bool IsGameOver() const { return game_over_; }
+        state GetWinner() const { return winner_; }
+        Board* GetBoard() const { return board_.get(); }
 
 
         //        void PrintBoard()const;

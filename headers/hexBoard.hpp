@@ -55,6 +55,7 @@ signals:
     void GameOver(int winner);
     void TimerTick(int secondsRemaining);
     void TurnChanged(int newPlayer);
+    void handleTileClick(int q, int r);
 
 private slots:
     void OnTimerTick();
@@ -65,6 +66,7 @@ private:
     void UpdateTileVisual(int q, int r, state tileState);
     void PlaySound(const QString& soundName);
     void ResetTimer();
+
 
     // Scene and visual
     QGraphicsScene* scene_;

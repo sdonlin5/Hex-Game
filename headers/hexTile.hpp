@@ -1,49 +1,36 @@
-//
-// Created by Stephen Donlin on 12/4/25.
-//
-
-#ifndef HEX_HEXTILE_HPP
-#define HEX_HEXTILE_HPP
+#ifndef HEXTILE_HPP
+#define HEXTILE_HPP
 
 #include <QGraphicsPolygonItem>
 #include <QBrush>
 #include <QPen>
-#include <memory>
-#include "hex.hpp"
+#include "state.hpp"
 #include "coords.hpp"
-#include "theme.hpp"
 
-class HexBoard; // Forward declaration
+class HexBoard;  // Forward declaration
 
 class HexTile : public QGraphicsPolygonItem {
     public:
-        HexTile(int q, int r, qreal radius, HexBoard* board = nullptr);
+        HexTile(int q, int r, qreal size, HexBoard* board);  // Changed to HexBoard*
 
-        int q() const { return q_; }
-        int r() const { return r_; }
-
-        void SetState(state color);
-        state GetState() const { return state_; }
-
-        void SetHighlight(bool highlight);
-        void SetHover(bool hover);
+        void setState(state newState);
+        state getState() const { return state_; }
+        int getQ() const { return q_; }
+        int getR() const { return r_; }
 
     protected:
+        void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
         void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
         void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
-        void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
     private:
-        QPolygonF MakeHexTile(qreal cx, qreal cy, qreal radius);
-        void UpdateColors();
-
         int q_;
         int r_;
-        qreal radius_;
         state state_;
-        bool highlighted_;
-        bool hovered_;
-        HexBoard* board_;
+        HexBoard* board_;  // Changed to HexBoard*
+        QBrush defaultBrush_;
+
+        void updateAppearance();
 };
 
-#endif //HEX_HEXTILE_HPP
+#endif // HEXTILE_HPP
