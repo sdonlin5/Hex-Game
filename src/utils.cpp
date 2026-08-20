@@ -20,20 +20,3 @@ std::pair<int, int> utils::axial_to_offset(int q, int r) {
     return {row, col};
 }
 
-/*
-std::pair<int, int> utils::offset_to_axial(int row, int col) {
-    // Convert Offset (row, col) to odd-r axial (q, r)
-    //
-    int q = col - (row - (row&1)) / 2;
-    int r = row - (col/2);
-    return {q, r};
-}
-
-std::pair<int, int> utils::axial_to_offset(int q, int r) {
-    // Converts odd-r axial (q, r) to Offset (row, col)
-    //
-    int row = r;
-    int col = q + (row - (row&1)) / 2;
-    return {row, col};
-
-*/

@@ -1,7 +1,7 @@
 ---
 Language: Cpp
 BasedOnStyle: Google
-AccessModifierOffset: 0        # <- add this line
+AccessModifierOffset: 0
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 AlignOperands: true
@@ -38,7 +38,7 @@ IncludeCategories:
   - Regex: '.*'
     Priority: 3
 IncludeIsMainRegex: '([-_](test|unittest))?$'
-IndentAccessModifiers: true    # already good for your desired layout
+IndentAccessModifiers: true
 IndentWidth: 4
 InsertNewlineAtEOF: true
 MacroBlockBegin: ''
