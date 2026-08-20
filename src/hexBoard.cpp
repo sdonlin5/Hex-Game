@@ -2,6 +2,8 @@
 #include "../headers/utils.hpp"
 #include <QDebug>
 #include <QUrl>
+#include <array>
+
 
 HexBoard::HexBoard(QGraphicsScene* scene, int boardSize, qreal hexRadius, QObject* parent)
     : QObject(parent)

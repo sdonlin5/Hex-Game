@@ -66,7 +66,18 @@ bool GameManager::PlayMove(int q, int r, state color) {
     UnionNeighbors(played_tile, neighbors);
 
     auto [row, col] = utils::axial_to_offset(q, r);
-    // left <--> right (gold)
+
+    // updated edge unioning to account for color
+    if (color == state::kGold){
+        if (col == 0) UnionEdge(played_tile, edge_left_);
+        if (col == board_ -> GetSize() - 1) UnionEdge(played_tile, edge_right_);
+    }
+    if (color == state::kBlack) {
+        if (row == 0) UnionEdge(played_tile, edge_top_);
+        if (row == board_ -> GetSize() - 1) UnionEdge(played_tile, edge_bottom__);
+    }
+
+    /*:wq
     if (col == 0) {
         UnionEdge(played_tile, edge_left_);
     }
@@ -82,6 +93,7 @@ bool GameManager::PlayMove(int q, int r, state color) {
     }
     CheckWin(color);
     return true;
+    */
 }
 
 std::shared_ptr<Hex> GameManager::SetEdgeTile(int q, int r, const state color) {
