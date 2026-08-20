@@ -92,6 +92,8 @@ std::shared_ptr<Hex> GameManager::SetEdgeTile(int q, int r, const state color) {
 void GameManager::InitForest() {
     //  Creates single element sets of Hex tiles, sets
     //  all board tile parent = self, rank = 0
+    uf_black_.Clear();
+    uf_gold_.Clear();
     for (const auto& row : board_->GetTiles()) {
         for (const auto& tile : row) {
             uf_black_.MakeSet(tile);
