@@ -29,6 +29,11 @@ void UnionFind::Link(std::shared_ptr<Hex> root_x, std::shared_ptr<Hex> root_y) {
     }
 }
 
+void UnionFind::Clear() {
+    parent_.clear();
+    rank_.clear();
+}
+
 void UnionFind::MakeSet(std::shared_ptr<Hex> hex) {
     parent_[hex] = hex;
     rank_[hex] = 0;

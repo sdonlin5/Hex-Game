@@ -37,7 +37,9 @@ class UnionFind {
         std::shared_ptr<Hex> FindRoot(std::shared_ptr<Hex> hex);
         void Union(std::shared_ptr<Hex> x, std::shared_ptr<Hex> y);
         void Link(std::shared_ptr<Hex> root_x, std::shared_ptr<Hex> root_y);
-    private:
+        void Clear(); 
+
+        private:
         // Container for parent and rank
         std::unordered_map<std::shared_ptr<Hex>, std::shared_ptr<Hex>, HexPtrHash, HexPtrEqual> parent_;
         std::unordered_map<std::shared_ptr<Hex>, int, HexPtrHash, HexPtrEqual> rank_;
