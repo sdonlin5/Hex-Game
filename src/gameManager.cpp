@@ -74,7 +74,7 @@ bool GameManager::PlayMove(int q, int r, state color) {
     }
     if (color == state::kBlack) {
         if (row == 0) UnionEdge(played_tile, edge_top_);
-        if (row == board_ -> GetSize() - 1) UnionEdge(played_tile, edge_bottom__);
+        if (row == board_ -> GetSize() - 1) UnionEdge(played_tile, edge_bottom_);
     }
 
     /*:wq

@@ -9,6 +9,7 @@ void UnionFind::Union(std::shared_ptr<Hex> x, std::shared_ptr<Hex> y) {
     Link(FindRoot(x), FindRoot(y));
 }
 
+
 void UnionFind::Link(std::shared_ptr<Hex> root_x, std::shared_ptr<Hex> root_y) {
     // Links tiles using rank
     int rank_x = rank_[root_x];

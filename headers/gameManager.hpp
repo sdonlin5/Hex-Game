@@ -26,6 +26,7 @@ class GameManager {
         state GetWinner() const { return winner_; }
         Board* GetBoard() const { return board_.get(); }
 
+
     private:
         GameManager();
         static GameManager instance_;
@@ -33,6 +34,7 @@ class GameManager {
         int num_round_;
         bool game_over_ { false };
         state winner_ { state::kNone };
+        shared_ptr current_turn_; // placeholder
         UnionFind uf_black_;
         UnionFind uf_gold_;
 

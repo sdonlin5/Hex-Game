@@ -255,6 +255,7 @@ void Window::showWinDialog(state winner)
     } else {
         close();
     }
+    
 }
 
 void Window::onResignClicked()
