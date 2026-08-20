@@ -77,7 +77,9 @@ bool GameManager::PlayMove(int q, int r, state color) {
         if (row == 0) UnionEdge(played_tile, edge_top_);
         if (row == board_ -> GetSize() - 1) UnionEdge(played_tile, edge_bottom_);
     }
-    CheckWin(color);
+    if (CheckWin(color)) {
+        CleanUp();
+    }
     return true;
 }
 
@@ -88,12 +90,16 @@ std::shared_ptr<Hex> GameManager::SetEdgeTile(int q, int r, const state color) {
     return edge_node;
 }
 
+void::GameManager::CleanUp() {
+    uf_black_.Clear();
+    uf_gold_.Clear();
+}
 
 void GameManager::InitForest() {
     //  Creates single element sets of Hex tiles, sets
     //  all board tile parent = self, rank = 0
-    uf_black_.Clear();
-    uf_gold_.Clear();
+    //uf_black_.Clear();
+    //uf_gold_.Clear();
     for (const auto& row : board_->GetTiles()) {
         for (const auto& tile : row) {
             uf_black_.MakeSet(tile);

@@ -25,7 +25,8 @@ class GameManager {
         bool IsGameOver() const { return game_over_; }
         state GetWinner() const { return winner_; }
         Board* GetBoard() const { return board_.get(); }
-        state FirstMove(); 
+        state FirstMove();
+        void CleanUp();
         void Swap();
 
 
