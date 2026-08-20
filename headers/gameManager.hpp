@@ -25,6 +25,8 @@ class GameManager {
         bool IsGameOver() const { return game_over_; }
         state GetWinner() const { return winner_; }
         Board* GetBoard() const { return board_.get(); }
+        state FirstMove(); 
+        void Swap();
 
 
     private:
@@ -34,7 +36,7 @@ class GameManager {
         int num_round_;
         bool game_over_ { false };
         state winner_ { state::kNone };
-        shared_ptr current_turn_; // placeholder
+        state current_player_;
         UnionFind uf_black_;
         UnionFind uf_gold_;
 

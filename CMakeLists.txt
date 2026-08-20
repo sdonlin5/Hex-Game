@@ -34,7 +34,6 @@ set(HEX_HEADERS
         headers/gameManager.hpp
         headers/unionFind.hpp
         headers/utils.hpp
-        headers/direction.h
         headers/theme.hpp
 )
 

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <memory>
-
+#include <array>
 
 #include "../headers/board.hpp"
 #include "../headers/utils.hpp"

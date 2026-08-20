@@ -4,6 +4,7 @@
 
 #include "../headers/gameManager.hpp"
 
+
 GameManager GameManager::instance_;
 
 GameManager::GameManager() {
@@ -76,24 +77,8 @@ bool GameManager::PlayMove(int q, int r, state color) {
         if (row == 0) UnionEdge(played_tile, edge_top_);
         if (row == board_ -> GetSize() - 1) UnionEdge(played_tile, edge_bottom_);
     }
-
-    /*:wq
-    if (col == 0) {
-        UnionEdge(played_tile, edge_left_);
-    }
-    if (col == board_->GetSize() - 1) {
-        UnionEdge(played_tile, edge_right_);
-    }
-    // top <--> bottom (black)
-    if (row == 0) {
-        UnionEdge(played_tile, edge_top_);
-    }
-    if (row == board_->GetSize() - 1) {
-        UnionEdge(played_tile, edge_bottom_);
-    }
     CheckWin(color);
     return true;
-    */
 }
 
 std::shared_ptr<Hex> GameManager::SetEdgeTile(int q, int r, const state color) {
@@ -137,3 +122,7 @@ void GameManager::SetUp(const int n) {
     board_ -> Build(n);
     InitForest();
 }
+
+
+// TODO: Implement FirstMove() to randomize first turn
+// TODO: Implement Swap() to update current player
