@@ -35,6 +35,7 @@ cmake --build . --target HexTests
 ```
 
 ## Known Issues
+- Swap rule is not implemented
 - `HexBoard` GUI controller class is not complete, it will included the following features
   - Board initialization
   - Pause/Resume
